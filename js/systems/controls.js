@@ -6,6 +6,6 @@ function createControls(camera, canvas) {
   controls.enableDamping = true;
   
   return controls;
-  }
+};
 
 export { createControls };

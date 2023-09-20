@@ -6,6 +6,6 @@ function createCamera() {
   camera.position.set(0, 30, 110);
 
   return camera;
-}
+};
 
 export { createCamera }
