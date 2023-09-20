@@ -43,35 +43,35 @@ const planetsList = [
     radius: 1.1,
     xPosition: 10,
     planetTexture: mercuryTexture,
-    orbit: 0.004,
+    orbit: 0.008,
   },
   {
     name: 'venus',
     radius: 1.36,
     xPosition: 15,
     planetTexture: venusTexture,
-    orbit: 0.008,
+    orbit: 0.006,
   },
   {
     name: 'earth',
     radius: 1.5,
     xPosition: 20,
     planetTexture: earthTexture,
-    orbit: 0.006,
+    orbit: 0.005,
   },
   {
     name: 'mars',
     radius: 0.65,
     xPosition: 25,
     planetTexture: marsTexture,
-    orbit: 0.005,
+    orbit: 0.0045,
   },
   {
     name: 'jupiter',
     radius: 4.5,
     xPosition: 35,
     planetTexture: jupiterTexture,
-    orbit: 0.002,
+    orbit: 0.004,
   },
   {
     name: 'saturn',
@@ -109,7 +109,7 @@ const planetsList = [
     radius: 0.8,
     xPosition: 78,
     planetTexture: plutoTexture,
-    orbit: 0.0008,
+    orbit: 0.0002,
   }
 
 ];

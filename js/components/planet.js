@@ -5,7 +5,7 @@ import { SphereGeometry,
         MeshBasicMaterial,
         Object3D,
         RingGeometry,
-        DoubleSide
+        DoubleSide,
       } from "../../node_modules/three/build/three.module.js";
 
 const textureLoader = new TextureLoader();
@@ -17,16 +17,20 @@ function createMaterial(planetTexture) {
   );
 
   if(planetTexture.includes('sun')){
-    material = new MeshBasicMaterial({ map: texture, });
+    material = new MeshBasicMaterial({ 
+      map: texture, 
+    });
   }else{
-    material = new MeshStandardMaterial({ map: texture, });
+    material = new MeshStandardMaterial({ 
+      map: texture,
+    });
   };
   
   return material;
 };
 
 function createPlanet(planetInfo) {
-  const { name, radius, xPosition, planetTexture, orbit } = planetInfo;
+  const { radius, xPosition, planetTexture, orbit } = planetInfo;
   const geometry = new SphereGeometry( radius, 32, 16 );
   const material = createMaterial(planetTexture);
   const planet = new Mesh(geometry, material);
@@ -50,13 +54,13 @@ function createPlanet(planetInfo) {
     );
     const ringMat = new MeshBasicMaterial({
       map: textureLoader.load(planetInfo.ring.texture),
-      side: DoubleSide
+      side: DoubleSide,
     });
     const ringMesh = new Mesh(ringGeo, ringMat);
     ringMesh.receiveShadow = true;
     planetSpace.add(ringMesh);
     ringMesh.position.x = xPosition;
-    ringMesh.rotation.x = -0.5 * Math.PI;
+    ringMesh.rotation.x = 1.3 * Math.PI;
   };
 
 
