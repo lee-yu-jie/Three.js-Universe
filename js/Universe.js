@@ -1,4 +1,3 @@
-import { Object3D } from "../node_modules/three/build/three.module.js";
 import { createCamera } from './components/camera.js';
 import { createScene } from './components/scene.js';
 import { createLights } from './components/lights.js';
@@ -9,7 +8,7 @@ import { createOrbit } from './components/orbit.js';
 import { createAsteroid } from './components/asteroid.js';
 import { Loop } from './systems/Loop.js';
 import { Resizer } from './systems/Resizer.js';
-import { planetsList } from './components/planetsList.js';
+import { planetsList } from './data/planetsList.js';
 
 let camera;
 let renderer;
@@ -36,12 +35,14 @@ class Universe {
       }
       loop.spinList.push(planetModel.planet);
       loop.orbitList.push(planetModel.planetSpace);
+
       scene.add(planetModel.planetSpace, createOrbit(planetInfo.xPosition, planetInfo.orbitOblique));
     };
 
     const { ambientLight, pointLight } = createLights();
+    const asteroidBelt = createAsteroid()
     
-    scene.add(createAsteroid(), pointLight, ambientLight);
+    scene.add(asteroidBelt, pointLight, ambientLight);
     
     new Resizer(container, camera, renderer);
   }
