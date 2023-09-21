@@ -6,6 +6,7 @@ import { SphereGeometry,
         Object3D,
         RingGeometry,
         DoubleSide,
+        MathUtils
       } from "../../node_modules/three/build/three.module.js";
 
 const textureLoader = new TextureLoader();
@@ -85,12 +86,11 @@ function createPlanet(planetInfo) {
     };
 
     let rotationAngle = 0;
-    const tiltAngle = 0 * (Math.PI / 180);
     satellite.orbit = (r, orbitSpeed) => {
       rotationAngle -= orbitSpeed;
       const x = r * Math.cos(rotationAngle);
       const z = r * Math.sin(rotationAngle);
-      const y = x * Math.tan(tiltAngle);
+      const y = 0
   
       satellite.position.set(x, y, z);
     };

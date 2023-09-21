@@ -6,6 +6,7 @@ import { createRenderer } from './systems/renderer.js';
 import { createControls } from './systems/controls.js';
 import { createPlanet } from './components/planet.js';
 import { createOrbit } from './components/orbit.js';
+import { createAsteroid } from './components/asteroid.js';
 import { Loop } from './systems/Loop.js';
 import { Resizer } from './systems/Resizer.js';
 import { planetsList } from './components/planetsList.js';
@@ -39,11 +40,8 @@ class Universe {
     };
 
     const { ambientLight, pointLight } = createLights();
-    const targetObject = new Object3D();
-    scene.add(targetObject);
-    targetObject.target = targetObject;
-
-    scene.add(pointLight, ambientLight);
+    
+    scene.add(createAsteroid(), pointLight, ambientLight);
     
     new Resizer(container, camera, renderer);
   }
