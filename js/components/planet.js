@@ -82,7 +82,7 @@ function createPlanet(planetInfo) {
     satellite.orbitSpeed = orbitSpeed
     satellite.position.x = xPosition;
     satellite.spin = () => {
-      satellite.rotateY(0.4);
+      satellite.rotateY(0.05);
     };
 
     let rotationAngle = 0;
