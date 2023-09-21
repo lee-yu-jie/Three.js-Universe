@@ -4,8 +4,8 @@ class Loop {
     this.scene = scene;
     this.renderer = renderer;
     this.controls = controls;
-    this.planets = [];
-    this.spacePlanets = [];
+    this.spinList = [];
+    this.orbitList = [];
   };
 
   start() {
@@ -21,14 +21,14 @@ class Loop {
   };
 
   orbit() {
-    for (const object of this.spacePlanets) {
-        object.orbit();
+    for (const object of this.orbitList) {
+      object.orbit(object.originX, object.orbitSpeed);
     }
   };
 
   spin() {
-    for (const object of this.planets) {
-        object.spin();
+    for (const object of this.spinList) {
+      object.spin();
     };
   };
 };
