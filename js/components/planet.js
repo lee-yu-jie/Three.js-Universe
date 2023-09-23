@@ -1,12 +1,13 @@
-import { SphereGeometry, 
-        Mesh, 
-        MeshStandardMaterial, 
-        TextureLoader,
-        MeshBasicMaterial,
-        Object3D,
-        RingGeometry,
-        DoubleSide,
-      } from "../../node_modules/three/build/three.module.js";
+import { 
+  SphereGeometry, 
+  Mesh, 
+  MeshStandardMaterial, 
+  TextureLoader,
+  MeshBasicMaterial,
+  Object3D,
+  RingGeometry,
+  DoubleSide,
+} from "../../node_modules/three/build/three.module.js";
 
 const textureLoader = new TextureLoader();
 
@@ -37,12 +38,52 @@ function calcCoordinate(r, rotationAngle, tiltAngle = 0){
   return { x, y, z };
 }
 
-function createPlanet(planetInfo) {
+function createRing({innerRadius, outerRadius, texture}){
+  const geometry = new RingGeometry(
+    innerRadius,
+    outerRadius,
+    32
+  );
+  const material = new MeshStandardMaterial({
+    map: textureLoader.load(texture),
+    side: DoubleSide,
+  });
+  const ring = new Mesh(geometry, material);
+  ring.receiveShadow = true;
+  ring.rotation.x = 1.5 * Math.PI;
+  return ring;
+}
+
+function createSatellite({radius, xPosition, planetTexture, orbitSpeed, name}){
+  const geometry = new SphereGeometry( radius, 32, 16 );
+  const material = createMaterial(planetTexture);
+  const satellite = new Mesh(geometry, material);
+  satellite.castShadow = true;
+  satellite.receiveShadow = true;
+  satellite.name = name;
+  satellite.originX = xPosition;
+  satellite.orbitSpeed = orbitSpeed
+  satellite.position.x = xPosition;
+  satellite.spin = () => {
+    satellite.rotateY(0.05);
+  };
+
+  let rotationAngle = 0;
+  satellite.orbit = (r, orbitSpeed) => {
+    rotationAngle -= orbitSpeed;
+    const {x, y, z} = calcCoordinate(r, rotationAngle);
+
+    satellite.position.set(x, y, z);
+  };
+
+  return satellite;
+}
+
+function createPlanet(planetInfo){
   const { radius, xPosition, planetTexture, orbitSpeed, orbitOblique, spinOblique } = planetInfo;
   const geometry = new SphereGeometry( radius, 32, 16 );
   const material = createMaterial(planetTexture);
   const planet = new Mesh(geometry, material);
-  let ringMesh
 
   if(!planetTexture.includes('sun')){
     planet.castShadow = true;
@@ -60,44 +101,12 @@ function createPlanet(planetInfo) {
   planetSpace.rotation.z = spinOblique * (Math.PI / 180);
 
   if(planetInfo.ring) {
-    const ringGeo = new RingGeometry(
-      planetInfo.ring.innerRadius,
-      planetInfo.ring.outerRadius,
-      32
-    );
-    const ringMat = new MeshStandardMaterial({
-      map: textureLoader.load(planetInfo.ring.texture),
-      side: DoubleSide,
-    });
-    ringMesh = new Mesh(ringGeo, ringMat);
-    ringMesh.receiveShadow = true;
-    ringMesh.rotation.x = 1.5 * Math.PI;
-
-    planetSpace.add(ringMesh);
+    const ring = createRing(planetInfo.ring);
+    planetSpace.add(ring);
   };
 
   if(planetInfo.satellite) {
-    const { radius, xPosition, planetTexture, orbitSpeed } = planetInfo.satellite; 
-    const geometry = new SphereGeometry( radius, 32, 16 );
-    const material = createMaterial(planetTexture);
-    const satellite = new Mesh(geometry, material);
-    satellite.castShadow = true;
-    satellite.receiveShadow = true;
-    satellite.name = planetInfo.satellite.name;
-    satellite.originX = xPosition;
-    satellite.orbitSpeed = orbitSpeed
-    satellite.position.x = xPosition;
-    satellite.spin = () => {
-      satellite.rotateY(0.05);
-    };
-
-    let rotationAngle = 0;
-    satellite.orbit = (r, orbitSpeed) => {
-      rotationAngle -= orbitSpeed;
-      const {x, y, z} = calcCoordinate(r, rotationAngle);
-  
-      satellite.position.set(x, y, z);
-    };
+    const satellite = createSatellite(planetInfo.satellite);
     planetSpace.add(satellite);
   }
 
